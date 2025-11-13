@@ -1,89 +1,162 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>REBEL UNIT — NEW DROP</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REBEL UNIT – NEW DROP</title>
 
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            text-align: center;
-        }
+<style>
+    body {
+        margin: 0;
+        background: #f2f2f2;
+        font-family: Arial, sans-serif;
+    }
 
-        header {
-            background: black;
-            color: white;
-            padding: 20px;
-            font-size: 22px;
-            font-weight: bold;
-            letter-spacing: 2px;
-        }
+    header {
+        background: black;
+        color: white;
+        padding: 20px;
+        text-align: center;
+        font-size: 26px;
+        letter-spacing: 2px;
+        font-weight: bold;
+    }
 
-        h1 {
-            margin-top: 40px;
-            font-size: 36px;
-        }
+    .filters {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        padding: 20px;
+    }
 
-        .products {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 30px;
-            padding: 40px;
-        }
+    input, select {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
 
-        .product {
-            background: white;
-            width: 330px;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            transition: 0.25s;
-        }
+    .products {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 20px;
+        gap: 25px;
+    }
 
-        .product:hover {
-            transform: scale(1.03);
-        }
+    .product {
+        background: white;
+        width: 310px;
+        padding: 20px;
+        border-radius: 14px;
+        text-align: center;
+        box-shadow: 0px 4px 20px rgba(0,0,0,0.15);
+        transition: .25s;
+    }
 
-        .product img {
-            width: 250px;
-            height: auto;
-        }
+    .product:hover {
+        transform: scale(1.05);
+    }
 
-        .name { font-size: 23px; margin-top: 10px; font-weight: bold; }
-        .category { color: gray; margin: 5px 0; }
-        .price { font-size: 20px; margin: 8px 0; }
+    .product img {
+        width: 220px;
+        height: auto;
+        border-radius: 10px;
+    }
 
-        button {
-            background: black;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            margin-top: 10px;
-            cursor: pointer;
-            border-radius: 10px;
-            font-size: 15px;
-            transition: 0.2s;
-        }
+    .name { font-size: 22px; margin-top: 10px; font-weight: bold; }
+    .category { color: gray; margin: 5px 0; }
+    .price { font-size: 20px; font-weight: bold; margin: 5px 0; }
 
-        button:hover {
-            background: #333;
-        }
-    </style>
+    button {
+        background: black;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 15px;
+        margin-top: 10px;
+    }
+
+    button:hover {
+        background: #333;
+    }
+
+    /* KOSZYK */
+    #cartBtn {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: black;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    #cartModal {
+        position: fixed;
+        top: 0; left: 0;
+        height: 100%;
+        width: 100%;
+        background: rgba(0,0,0,0.7);
+        display: none;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #cartBox {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        width: 350px;
+    }
+
+    .cart-item {
+        padding: 10px 0;
+        border-bottom: 1px solid #ddd;
+    }
+</style>
 </head>
+
 <body>
 
 <header>NEW DROP OUT NOW!</header>
-<h1>NEW DROP</h1>
 
-<div class="products" id="productList"></div>
+<button id="cartBtn">Koszyk (0)</button>
+
+<div class="filters">
+    <input type="text" id="searchInput" placeholder="Szukaj produktu...">
+    <select id="categoryFilter">
+        <option value="all">Wszystko</option>
+        <option value="perfumy">Perfumy</option>
+        <option value="ubrania">Ubrania</option>
+    </select>
+    <select id="priceFilter">
+        <option value="default">Cena</option>
+        <option value="asc">Najtańsze</option>
+        <option value="desc">Najdroższe</option>
+    </select>
+</div>
+
+<h1 style="text-align:center; font-size:34px;">NEW DROP</h1>
+
+<div id="productList" class="products"></div>
+
+<!-- MODAL KOSZYKA -->
+<div id="cartModal">
+    <div id="cartBox">
+        <h2>Twój koszyk</h2>
+        <div id="cartItems"></div>
+        <h3>Suma: <span id="cartTotal">0.00</span> zł</h3>
+        <button onclick="closeCart()">Zamknij</button>
+    </div>
+</div>
 
 <script>
-const products = [
+/* PRODUKTY – TU DODAJESZ SWOJE */
+let products = [
     {
         name: "Dior Sauvage",
         price: 499,
@@ -95,34 +168,94 @@ const products = [
         price: 705,
         category: "ubrania",
         image: "https://raw.githubusercontent.com/oskarlesnial-sys/REBEL-UNIT/main/shadow.webp"
+    },
+    {
+        name: "Signature Jeans",
+        price: 449,
+        category: "ubrania",
+        image: "https://raw.githubusercontent.com/oskarlesnial-sys/REBEL-UNIT/main/sign.webp"
     }
 ];
 
-function loadProducts() {
+let cart = [];
+
+/* WYŚWIETLANIE PRODUKTÓW */
+function displayProducts(items) {
     const list = document.getElementById("productList");
     list.innerHTML = "";
 
-    products.forEach(p => {
-        const el = document.createElement("div");
-        el.classList.add("product");
+    items.forEach(p => {
+        let div = document.createElement("div");
+        div.classList.add("product");
 
-        el.innerHTML = `
+        div.innerHTML = `
             <img src="${p.image}" alt="${p.name}">
             <div class="name">${p.name}</div>
             <div class="category">${p.category}</div>
             <div class="price">${p.price.toFixed(2)} zł</div>
-            <button>Dodaj do koszyka</button>
+            <button onclick='addToCart("${p.name}", ${p.price})'>Dodaj do koszyka</button>
         `;
 
-        list.appendChild(el);
+        list.appendChild(div);
     });
 }
 
-loadProducts();
+displayProducts(products);
+
+/* WYSZUKIWANIE + FILTRY */
+function filterProducts() {
+    const search = document.getElementById("searchInput").value.toLowerCase();
+    const category = document.getElementById("categoryFilter").value;
+    const price = document.getElementById("priceFilter").value;
+
+    let filtered = products.filter(p =>
+        p.name.toLowerCase().includes(search) &&
+        (category === "all" || p.category === category)
+    );
+
+    if (price === "asc") filtered.sort((a,b) => a.price - b.price);
+    if (price === "desc") filtered.sort((a,b) => b.price - a.price);
+
+    displayProducts(filtered);
+}
+
+document.getElementById("searchInput").addEventListener("input", filterProducts);
+document.getElementById("categoryFilter").addEventListener("change", filterProducts);
+document.getElementById("priceFilter").addEventListener("change", filterProducts);
+
+/* KOSZYK */
+function addToCart(name, price) {
+    cart.push({name, price});
+    updateCart();
+}
+
+function updateCart() {
+    document.getElementById("cartBtn").innerText = `Koszyk (${cart.length})`;
+}
+
+document.getElementById("cartBtn").onclick = function () {
+    let box = document.getElementById("cartItems");
+    box.innerHTML = "";
+
+    let total = 0;
+
+    cart.forEach(p => {
+        box.innerHTML += `<div class="cart-item">${p.name} – ${p.price} zł</div>`;
+        total += p.price;
+    });
+
+    document.getElementById("cartTotal").innerText = total.toFixed(2);
+    document.getElementById("cartModal").style.display = "flex";
+};
+
+function closeCart() {
+    document.getElementById("cartModal").style.display = "none";
+}
 </script>
 
 </body>
 </html>
+
 
 
 
