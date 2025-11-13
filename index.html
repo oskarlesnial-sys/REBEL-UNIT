@@ -260,19 +260,74 @@
   </footer>
 
   <script>
-    const products = [
-      { name: "Urban Bomber Jacket", price: 705, category: "ubrania" },
-      { name: "Striped Knit Polo", price: 416, category: "ubrania" },
-      { name: "Racing Oil Polo", price: 419, category: "ubrania" },
-      { name: "Signature Jeans", price: 449, category: "ubrania" },
-      { name: "Night Rebel Perfume", price: 299, category: "perfumy" },
-      { name: "Urban Spirit Perfume", price: 289, category: "perfumy" },
-      { name: "Steel Core Hoodie", price: 520, category: "ubrania" },
-      { name: "Rebel Noir Perfume", price: 350, category: "perfumy" },
-      { name: "Tactical Cargo Pants", price: 480, category: "ubrania" },
-      { name: "White Rebel Perfume", price: 410, category: "perfumy" },
-      { name: "Shadow Windbreaker", price: 635, category: "ubrania" }
-    ];
+const products = [
+    { 
+        name: "Urban Bomber Jacket", 
+        price: 705, 
+        category: "ubrania",
+        image: "urban.webp"
+    },
+    { 
+        name: "Striped Knit Polo", 
+        price: 416, 
+        category: "ubrania",
+        image: "knit.webp"
+    },
+    { 
+        name: "Racing Oil Polo", 
+        price: 419, 
+        category: "ubrania",
+        image: "racing.webp"
+    },
+    { 
+        name: "Signature Jeans", 
+        price: 449, 
+        category: "ubrania",
+        image: "jeans.webp"
+    },
+    { 
+        name: "Night Rebel Perfume", 
+        price: 299, 
+        category: "perfumy",
+        image: "nightperf.webp"
+    },
+    { 
+        name: "Urban Spirit Perfume", 
+        price: 289, 
+        category: "perfumy",
+        image: "urbanperf.webp"
+    },
+    { 
+        name: "Steel Core Hoodie", 
+        price: 520, 
+        category: "ubrania",
+        image: "hoodie.webp"
+    },
+    { 
+        name: "Rebel Noir Perfume", 
+        price: 350, 
+        category: "perfumy",
+        image: "rebelnoir.webp"
+    },
+    { 
+        name: "Tactical Cargo Pants", 
+        price: 480, 
+        category: "ubrania",
+        image: "cargo.webp"
+    },
+    { 
+        name: "White Rebel Perfume", 
+        price: 410, 
+        category: "perfumy",
+        image: "dss.webp"   // ← tu jest twoje DIOR
+    },
+    { 
+        name: "Shadow Windbreaker", 
+        price: 635, 
+        category: "ubrania",
+        image: "wind.webp"
+    }
+];
 
     const productList = document.getElementById("productList");
     const categoryFilter = document.getElementById("categoryFilter");
@@ -362,5 +417,6 @@
   </script>
 </body>
 </html>
+
 
 
