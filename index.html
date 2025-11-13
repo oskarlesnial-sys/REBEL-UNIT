@@ -1,109 +1,503 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <title>REBEL UNIT – Sklep</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            margin: 0;
-            padding: 20px;
-        }
+  <meta charset="UTF-8">
+  <title>REBEL UNIT | NEW DROP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        h1 {
-            text-align: center;
-            margin-bottom: 40px;
-        }
+  <style>
+    /* ====== RESET ====== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        .products {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 20px;
-        }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f5f5f5;
+      color: #000;
+    }
 
-        .product {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-        }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-        .product img {
-            width: 100%;
-            height: 280px;
-            object-fit: contain;
-        }
+    /* ====== TOP BAR ====== */
+    .top-bar {
+      background: #000;
+      color: #fff;
+      text-align: center;
+      font-size: 14px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 8px 0;
+    }
 
-        .product button {
-            margin-top: 15px;
-            background: black;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 8px;
-        }
-    </style>
+    /* ====== HEADER ====== */
+    .header {
+      background: #fff;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 20px;
+    }
+
+    .header-left,
+    .header-right {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-weight: 600;
+    }
+
+    .logo {
+      font-size: 20px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .bag-count {
+      margin-left: 4px;
+    }
+
+    /* ====== MAIN ====== */
+    .main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 16px 60px;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 32px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin: 32px 0 24px;
+    }
+
+    /* ====== FILTER BAR ====== */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 28px;
+    }
+
+    .filter-bar input,
+    .filter-bar select {
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid #ccc;
+      min-width: 170px;
+      font-size: 14px;
+      outline: none;
+      background: #fff;
+    }
+
+    /* ====== PRODUCTS GRID ====== */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 28px;
+    }
+
+    .product-card {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      padding: 18px 18px 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .product-image {
+      width: 100%;
+      height: 230px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+
+    .product-image img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .product-name {
+      font-size: 15px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
+    }
+
+    .product-category {
+      font-size: 12px;
+      color: #666;
+      text-transform: lowercase;
+      margin-bottom: 6px;
+    }
+
+    .product-price {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .product-actions {
+      margin-top: auto;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: #000;
+      color: #fff;
+      border-radius: 999px;
+      padding: 10px 18px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+    }
+
+    /* ====== CART MODAL ====== */
+    .cart-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+
+    .cart-modal {
+      width: 90%;
+      max-width: 420px;
+      background: #fff;
+      border-radius: 18px;
+      padding: 20px 18px 16px;
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .cart-title {
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 700;
+    }
+
+    .cart-close {
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .cart-items {
+      flex: 1;
+      overflow-y: auto;
+      margin-bottom: 12px;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      padding: 6px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .cart-total {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      text-align: right;
+    }
+
+    .cart-empty {
+      font-size: 13px;
+      color: #777;
+      text-align: center;
+      margin: 14px 0;
+    }
+
+    .cart-bottom-btn {
+      width: 100%;
+    }
+
+    /* ====== FOOTER ====== */
+    .footer {
+      text-align: center;
+      font-size: 11px;
+      color: #999;
+      padding: 18px 0 26px;
+    }
+
+    /* ====== RESPONSIVE ====== */
+    @media (max-width: 600px) {
+      .section-title {
+        font-size: 24px;
+        letter-spacing: 0.15em;
+      }
+
+      .header {
+        padding: 10px 12px;
+      }
+
+      .logo {
+        font-size: 16px;
+        letter-spacing: 0.22em;
+      }
+    }
+  </style>
 </head>
-
 <body>
 
-    <h1>NEW DROP</h1>
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    NEW DROP OUT NOW !
+  </div>
 
-    <div class="products" id="productList"></div>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-left">Menu</div>
+    <div class="logo">REBEL UNIT</div>
+    <div class="header-right">
+      BAG (<span id="bagCount">0</span>)
+    </div>
+  </header>
 
-    <script>
-        const products = [
-            {
-                name: "Dior Sauvage",
-                price: 499,
-                category: "perfumy",
-                image: "sauvage.webp"
-            },
-            {
-                name: "Urban Bomber Jacket",
-                price: 705,
-                category: "ubrania",
-                image: "jacket.webp"
-            },
-            {
-                name: "Signature Jeans",
-                price: 449,
-                category: "ubrania",
-                image: "jeans.webp"
-            }
-        ];
+  <!-- MAIN -->
+  <main class="main">
+    <h1 class="section-title">NEW DROP</h1>
 
-        function displayProducts() {
-            const list = document.getElementById("productList");
-            list.innerHTML = "";
+    <!-- FILTERS -->
+    <div class="filter-bar">
+      <input id="searchInput" type="text" placeholder="Szukaj produktu...">
+      <select id="categoryFilter">
+        <option value="all">Wszystko</option>
+        <option value="ubrania">Ubrania</option>
+        <option value="perfumy">Perfumy</option>
+      </select>
+      <select id="priceFilter">
+        <option value="none">Cena</option>
+        <option value="asc">Od najtańszych</option>
+        <option value="desc">Od najdroższych</option>
+      </select>
+    </div>
 
-            products.forEach(p => {
-                const div = document.createElement("div");
-                div.classList.add("product");
+    <!-- PRODUCTS LIST -->
+    <div class="products-grid" id="productList"></div>
+  </main>
 
-                div.innerHTML = `
-                    <img src="${p.image}" alt="${p.name}">
-                    <h3>${p.name}</h3>
-                    <p>${p.category}</p>
-                    <p><strong>${p.price.toFixed(2)} zł</strong></p>
-                    <button>Dodaj do koszyka</button>
-                `;
+  <!-- CART MODAL -->
+  <div class="cart-overlay" id="cartOverlay">
+    <div class="cart-modal">
+      <div class="cart-header">
+        <div class="cart-title">Bag</div>
+        <div class="cart-close" id="cartClose">X</div>
+      </div>
 
-                list.appendChild(div);
-            });
-        }
+      <div class="cart-items" id="cartItems"></div>
+      <div class="cart-total" id="cartTotal"></div>
+      <button class="btn-primary cart-bottom-btn" id="checkoutBtn">
+        Przejdź do płatności (fake)
+      </button>
+    </div>
+  </div>
 
-        displayProducts();
-    </script>
+  <footer class="footer">
+    © 2025 REBEL UNIT. All rights reserved.
+  </footer>
 
+  <script>
+    /* ======== DANE PRODUKTÓW ======== */
+    const products = [
+      {
+        name: "Dior Sauvage",
+        price: 499,
+        category: "perfumy",
+        image: "sauvage.webp"
+      },
+      {
+        name: "Urban Bomber Jacket",
+        price: 705,
+        category: "ubrania",
+        image: "bomber.webp"
+      },
+      {
+        name: "Striped Knit Polo",
+        price: 416,
+        category: "ubrania",
+        image: "knit_polo.webp"
+      },
+      {
+        name: "Racing Oil Polo",
+        price: 419,
+        category: "ubrania",
+        image: "racing_polo.webp"
+      },
+      {
+        name: "White Rebel Perfume",
+        price: 410,
+        category: "perfumy",
+        image: "white_rebel.webp"
+      },
+      {
+        name: "Signature Jeans",
+        price: 449,
+        category: "ubrania",
+        image: "jeans.webp"
+      }
+    ];
+
+    /* ======== ELEMENTY DOM ======== */
+    const productList   = document.getElementById("productList");
+    const searchInput   = document.getElementById("searchInput");
+    const categoryFilter = document.getElementById("categoryFilter");
+    const priceFilter   = document.getElementById("priceFilter");
+
+    const bagCount      = document.getElementById("bagCount");
+    const cartOverlay   = document.getElementById("cartOverlay");
+    const cartItemsEl   = document.getElementById("cartItems");
+    const cartTotalEl   = document.getElementById("cartTotal");
+    const cartCloseBtn  = document.getElementById("cartClose");
+
+    let cart = [];
+
+    /* ======== WYŚWIETLANIE PRODUKTÓW (BEZ BACKTICKÓW W ŚRODKU HTMLA) ======== */
+    function displayProducts(items) {
+      productList.innerHTML = "";
+
+      items.forEach(function(p) {
+        const div = document.createElement("div");
+        div.classList.add("product-card");
+
+        let html = "";
+        html += '<div class="product-image">';
+        html +=   '<img src="' + p.image + '" alt="' + p.name + '">';
+        html += '</div>';
+        html += '<div class="product-info">';
+        html +=   '<div class="product-name">' + p.name + '</div>';
+        html +=   '<div class="product-category">' + p.category + '</div>';
+        html +=   '<div class="product-price">' + p.price.toFixed(2) + ' zł</div>';
+        html += '</div>';
+        html += '<div class="product-actions">';
+        html +=   '<button class="btn-primary" onclick="addToCart(\'' + p.name.replace(/'/g,"\\'") + '\',' + p.price + ')">Dodaj do koszyka</button>';
+        html += '</div>';
+
+        div.innerHTML = html;
+        productList.appendChild(div);
+      });
+    }
+
+    /* ======== FILTROWANIE ======== */
+    function filterProducts() {
+      const search = searchInput.value.toLowerCase();
+      const category = categoryFilter.value;
+      const priceSort = priceFilter.value;
+
+      let filtered = products.filter(function(p) {
+        const matchSearch = p.name.toLowerCase().includes(search);
+        const matchCat = category === "all" || p.category === category;
+        return matchSearch && matchCat;
+      });
+
+      if (priceSort === "asc") {
+        filtered.sort(function(a, b) { return a.price - b.price; });
+      } else if (priceSort === "desc") {
+        filtered.sort(function(a, b) { return b.price - a.price; });
+      }
+
+      displayProducts(filtered);
+    }
+
+    searchInput.addEventListener("input", filterProducts);
+    categoryFilter.addEventListener("change", filterProducts);
+    priceFilter.addEventListener("change", filterProducts);
+
+    /* ======== KOSZYK ======== */
+    function addToCart(name, price) {
+      cart.push({ name: name, price: price });
+      updateCart();
+    }
+
+    function updateCart() {
+      bagCount.textContent = cart.length;
+
+      cartItemsEl.innerHTML = "";
+      if (cart.length === 0) {
+        cartItemsEl.innerHTML = '<div class="cart-empty">Twój koszyk jest pusty.</div>';
+        cartTotalEl.textContent = "";
+        return;
+      }
+
+      let total = 0;
+      cart.forEach(function(item, index) {
+        total += item.price;
+        const row = document.createElement("div");
+        row.classList.add("cart-item");
+        row.innerHTML =
+          '<span>' + (index + 1) + '. ' + item.name + '</span>' +
+          '<span>' + item.price.toFixed(2) + ' zł</span>';
+        cartItemsEl.appendChild(row);
+      });
+
+      cartTotalEl.textContent = "Razem: " + total.toFixed(2) + " zł";
+    }
+
+    /* ======== MODAL KOSZYKA ======== */
+    document.querySelector(".header-right").addEventListener("click", function() {
+      cartOverlay.style.display = "flex";
+    });
+
+    cartCloseBtn.addEventListener("click", function() {
+      cartOverlay.style.display = "none";
+    });
+
+    cartOverlay.addEventListener("click", function(e) {
+      if (e.target === cartOverlay) {
+        cartOverlay.style.display = "none";
+      }
+    });
+
+    document.getElementById("checkoutBtn").addEventListener("click", function() {
+      alert("Tu kiedyś może być prawdziwa płatność 💸. Na razie to tylko demo.");
+    });
+
+    /* ======== START ======== */
+    displayProducts(products);
+  </script>
 </body>
 </html>
+
 
 
 
